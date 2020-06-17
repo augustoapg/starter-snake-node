@@ -35,21 +35,11 @@ function handleStart(request, response) {
 }
 
 function handleMove(request, response) {
-  var gameData = JSON.parse(request.body);
-  var board = gameData.board;
+  var gameData = request.body;
+  var board = gameData['board'];
 
-  console.log(board);
-  
-  var boardDimensions = {
-    x: board.width,
-    y: board.height
-  };
-
-  var foods = board.food;
-  var snakes = board.snakes;
-  var mySnake = gameData.you;
-
-  var possibleMoves = ['up', 'down', 'left', 'right'];
+  var foods = board['food'];
+  var mySnake = gameData['you'];
 
   var destination = getDestination(mySnake, foods);
   var move = decideMovement(destination, board, mySnake);
@@ -68,12 +58,12 @@ function handleEnd(request, response) {
 }
 
 function getDestination(mySnake, foods) {
-  var head = mySnake.head;
+  var head = mySnake['head'];
   var minDistance = 100; // arbitrary initial value
   var closestFood = {};
 
   foods.forEach(food => {
-    let distance = Math.abs(head.x - food.x) + Math.abs(head.y - food.y);
+    let distance = Math.abs(head['x'] - food['x']) + Math.abs(head['y'] - food['y']);
     
     if (distance < minDistance) {
       minDistance = distance;
@@ -85,11 +75,11 @@ function getDestination(mySnake, foods) {
 }
 
 function decideMovement(destination, board, mySnake) {
-  var snakes = board.snakes;
+  var snakes = board['snakes'];
 
-  if (mySnake.head.x !== destination.x) {
-    console.log('my snake will move in the x axis. It is on ' + mySnake.head.x + ' and needs to get to ' + destination.x);
-    if (mySnake.x < destination.x) {
+  if (mySnake['head']['x'] !== destination['x']) {
+    console.log('my snake will move in the x axis. It is on ' + mySnake['head']['x'] + ' and needs to get to ' + destination['x']);
+    if (mySnake['head']['x'] < destination['x']) {
       if (canMoveRight(board, mySnake)) {
         return 'right';
       }
@@ -101,8 +91,8 @@ function decideMovement(destination, board, mySnake) {
       console.log('Needed to go left, but couldn\'t');
     }
   } else {
-    console.log('my snake will move in the y axis. It is on ' + mySnake.head.y + ' and needs to get to ' + destination.y);
-    if (mySnake.y < destination.y) {
+    console.log('my snake will move in the y axis. It is on ' + mySnake['head']['y'] + ' and needs to get to ' + destination['y']);
+    if (mySnake['head']['y'] < destination['y']) {
       if (canMoveUp(board, mySnake)) {
         return 'up';
       }
@@ -117,49 +107,49 @@ function decideMovement(destination, board, mySnake) {
 }
 
 function canMoveRight(board, mySnake) {
-  var nextDestination = {x: mySnake.head.x + 1, y: mySnake.head.y};
+  var nextDestination = {'x': mySnake['head']['x'] + 1, 'y': mySnake['head']['y']};
 
-  if (nextDestination.x > board.width) {
+  if (nextDestination['x'] > board['width']) {
     return false;
   }
 
-  return isSpaceEmpty(board.snakes, nextDestination);
+  return isSpaceEmpty(board['snakes'], nextDestination);
 }
 
 function canMoveLeft(board, mySnake) {
-  var nextDestination = {x: mySnake.head.x -1, y: mySnake.head.y};
+  var nextDestination = {'x': mySnake['head']['x'] -1, 'y': mySnake['head']['y']};
   
-  if (nextDestination.x < 0) {
+  if (nextDestination['x'] < 0) {
     return false;
   }
 
-  return isSpaceEmpty(board.snakes, nextDestination);
+  return isSpaceEmpty(board['snakes'], nextDestination);
 }
 
 function canMoveUp(board, mySnake) {
-  var nextDestination = {x: mySnake.head.x, y: mySnake.head.y + 1};
+  var nextDestination = {'x': mySnake['head']['x'], 'y': mySnake['head']['y'] + 1};
   
-  if (nextDestination.y > board.height) {
+  if (nextdestination['y'] > board['height']) {
     return false;
   }
 
-  return isSpaceEmpty(board.snakes, nextDestination);
+  return isSpaceEmpty(board['snakes'], nextDestination);
 }
 
 function canMoveDown(board, mySnake) {
-  var nextDestination = {x: mySnake.head.x, y: mySnake.head.y - 1};
+  var nextDestination = {'x': mySnake['head']['x'], 'y': mySnake['head']['y'] - 1};
   
-  if (nextDestination.y < 0) {
+  if (nextdestination['y'] < 0) {
     return false;
   }
 
-  return isSpaceEmpty(board.snakes, nextDestination);
+  return isSpaceEmpty(board['snakes'], nextDestination);
 }
 
 function isSpaceEmpty(snakes, nextDestination) {
   snakes.forEach(snake => {
-    snake.body.forEach(segment => {
-      if (segment.x === nextDestination.x && segment.y === nextDestination.y) {
+    snake['body'].forEach(segment => {
+      if (segment['x'] === nextDestination['x'] && segment['y'] === nextdestination['y']) {
         return false;
       }
     })
