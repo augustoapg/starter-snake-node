@@ -88,24 +88,30 @@ function decideMovement(destination, board, mySnake) {
   var snakes = board.snakes;
 
   if (mySnake.head.x !== destination.x) {
+    console.log('my snake will move in the x axis. It is on ' + mySnake.head.x + ' and needs to get to ' + destination.x);
     if (mySnake.x < destination.x) {
       if (canMoveRight(board, mySnake)) {
         return 'right';
       }
+      console.log('Needed to go right, but couldn\'t');
     } else {
       if (canMoveLeft(board, mySnake)) {
         return 'left';
       }
+      console.log('Needed to go left, but couldn\'t');
     }
   } else {
+    console.log('my snake will move in the y axis. It is on ' + mySnake.head.y + ' and needs to get to ' + destination.y);
     if (mySnake.y < destination.y) {
       if (canMoveUp(board, mySnake)) {
         return 'up';
       }
+      console.log('Needed to go up, but couldn\'t');
     } else {
       if (canMoveDown(board, mySnake)) {
         return 'down';
       }
+      console.log('Needed to go down, but couldn\'t');
     }
   }
 }
