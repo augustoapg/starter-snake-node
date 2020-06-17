@@ -156,16 +156,18 @@ function isSpaceEmpty(snakes, nextDestination) {
   console.log(`Next dest is {${nextDestination['x']}, ${nextDestination['y']}}`)
   var isDestEmpty = true;
 
-  snakes.forEach(snake => {
-    snake['body'].forEach(segment => {
-      console.log(`segment is {${segment['x']}, ${segment['y']}}`)
+  for (i = 0; i < snake['body'].length; i++) {
+    var snake = snakes[i];
+    for (j = 0; j < snake['body'].length; j++) {
+      var segment = snake['body'][j];
+      console.log(`segment is {${segment['x']}, ${segment['y']}}`);
       if (segment['x'] === nextDestination['x'] && segment['y'] === nextDestination['y']) {
         console.log('Space occupied!');
         isDestEmpty = false;
         break;
       }
-    })
-  });
+    }
+  }
 
   return isDestEmpty;
 }
