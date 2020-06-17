@@ -71,6 +71,8 @@ function getDestination(mySnake, foods) {
     }
   });
 
+  console.log('The nearest food is at {' + closestFood['x'] + ', ' + closestFood['y'] + '}')
+
   return closestFood;
 }
 
@@ -109,7 +111,7 @@ function decideMovement(destination, board, mySnake) {
 function canMoveRight(board, mySnake) {
   var nextDestination = {'x': mySnake['head']['x'] + 1, 'y': mySnake['head']['y']};
 
-  if (nextDestination['x'] > board['width']) {
+  if (isDestinationOutOfBounds(nextDestination, board)) {
     return false;
   }
 
@@ -119,7 +121,7 @@ function canMoveRight(board, mySnake) {
 function canMoveLeft(board, mySnake) {
   var nextDestination = {'x': mySnake['head']['x'] -1, 'y': mySnake['head']['y']};
   
-  if (nextDestination['x'] < 0) {
+  if (isDestinationOutOfBounds(nextDestination, board)) {
     return false;
   }
 
@@ -129,7 +131,7 @@ function canMoveLeft(board, mySnake) {
 function canMoveUp(board, mySnake) {
   var nextDestination = {'x': mySnake['head']['x'], 'y': mySnake['head']['y'] + 1};
   
-  if (nextDestination['y'] > board['height']) {
+  if (isDestinationOutOfBounds(nextDestination, board)) {
     return false;
   }
 
@@ -139,21 +141,29 @@ function canMoveUp(board, mySnake) {
 function canMoveDown(board, mySnake) {
   var nextDestination = {'x': mySnake['head']['x'], 'y': mySnake['head']['y'] - 1};
   
-  if (nextDestination['y'] < 0) {
+  if (isDestinationOutOfBounds(nextDestination, board)) {
     return false;
   }
 
   return isSpaceEmpty(board['snakes'], nextDestination);
 }
 
+function isDestinationOutOfBounds(nextDestination, board) {
+  return nextDestination['x'] < 0 || nextDestination['y'] < 0 || nextDestination['x'] > board['width'] || nextDestination['y'] > board['height'];
+}
+
 function isSpaceEmpty(snakes, nextDestination) {
+  console.log(`Next dest is {${nextDestination['x']}, ${nextDestination['y']}}`)
   snakes.forEach(snake => {
     snake['body'].forEach(segment => {
+      console.log(`segment is {${segment['x']}, ${segment['y']}}`)
       if (segment['x'] === nextDestination['x'] && segment['y'] === nextDestination['y']) {
+        console.log('Space occupied!');
         return false;
       }
     })
   });
 
+  console.log('Space NOT occupied!');
   return true;
 }
