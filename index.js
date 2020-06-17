@@ -154,16 +154,18 @@ function isDestinationOutOfBounds(nextDestination, board) {
 
 function isSpaceEmpty(snakes, nextDestination) {
   console.log(`Next dest is {${nextDestination['x']}, ${nextDestination['y']}}`)
+  var isDestEmpty = true;
+
   snakes.forEach(snake => {
     snake['body'].forEach(segment => {
       console.log(`segment is {${segment['x']}, ${segment['y']}}`)
       if (segment['x'] === nextDestination['x'] && segment['y'] === nextDestination['y']) {
         console.log('Space occupied!');
-        return false;
+        isDestEmpty = false;
+        break;
       }
     })
   });
 
-  console.log('Space NOT occupied!');
-  return true;
+  return isDestEmpty;
 }
