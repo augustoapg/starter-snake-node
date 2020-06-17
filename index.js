@@ -156,7 +156,7 @@ function isSpaceEmpty(snakes, nextDestination) {
   console.log(`Next dest is {${nextDestination['x']}, ${nextDestination['y']}}`)
   var isDestEmpty = true;
 
-  for (i = 0; i < snake['body'].length; i++) {
+  for (i = 0; i < snakes.length; i++) {
     var snake = snakes[i];
     for (j = 0; j < snake['body'].length; j++) {
       var segment = snake['body'][j];
