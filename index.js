@@ -129,7 +129,7 @@ function canMoveLeft(board, mySnake) {
 function canMoveUp(board, mySnake) {
   var nextDestination = {'x': mySnake['head']['x'], 'y': mySnake['head']['y'] + 1};
   
-  if (nextdestination['y'] > board['height']) {
+  if (nextDestination['y'] > board['height']) {
     return false;
   }
 
@@ -139,7 +139,7 @@ function canMoveUp(board, mySnake) {
 function canMoveDown(board, mySnake) {
   var nextDestination = {'x': mySnake['head']['x'], 'y': mySnake['head']['y'] - 1};
   
-  if (nextdestination['y'] < 0) {
+  if (nextDestination['y'] < 0) {
     return false;
   }
 
@@ -149,7 +149,7 @@ function canMoveDown(board, mySnake) {
 function isSpaceEmpty(snakes, nextDestination) {
   snakes.forEach(snake => {
     snake['body'].forEach(segment => {
-      if (segment['x'] === nextDestination['x'] && segment['y'] === nextdestination['y']) {
+      if (segment['x'] === nextDestination['x'] && segment['y'] === nextDestination['y']) {
         return false;
       }
     })
