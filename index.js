@@ -12,10 +12,10 @@ app.post('/move', handleMove);
 app.post('/end', handleEnd);
 
 const directionData = {
-  'right': {'x': 1, 'y': 0, 'opositeTo': 'left'},
-  'left': {'x': -1, 'y': 0, 'opositeTo': 'right'},
-  'up': {'x': 0, 'y': 1, 'opositeTo': 'down'},
-  'down': {'x': 0, 'y': -1, 'opositeTo': 'up'},
+  'right': {'x': 1, 'y': 0, 'axis': 'horizontal', 'opositeTo': 'left'},
+  'left': {'x': -1, 'y': 0, 'axis': 'horizontal', 'opositeTo': 'right'},
+  'up': {'x': 0, 'y': 1, 'axis': 'vertical', 'opositeTo': 'down'},
+  'down': {'x': 0, 'y': -1, 'axis': 'vertical', 'opositeTo': 'up'},
 }
 
 let lastMove = '';
@@ -130,12 +130,47 @@ function getAlternativeRoute(whereTo, board, mySnake) {
 
   for (let i = 0; i < possibleMoves.length; i++) {
     const attemptMove = possibleMoves[i];
-    console.log(`Now trying to go to ${attemptMove}`);
-    if (canMoveDirection(attemptMove, board, mySnake)) {
-      return attemptMove;
+    let dists = {};
+
+    if (directionData[attemptMove]['axis'] === 'vertical') {
+      if (directionData[attemptMove]['y'] === -1) {
+        dists[attemptMove] = mySnake['head']['y'];
+      } else {
+        dists[attemptMove] = board['height'] - mySnake['head']['y'];
+      }
+    } else {
+      if (directionData[attemptMove]['x'] === -1) {
+        dists[attemptMove] = mySnake['head']['x'];
+      } else {
+        dists[attemptMove] = board['width'] - mySnake['head']['x'];
+      }
     }
   }
+
+  return getLessOccupiedDirection(dists);
+
+  // for (let i = 0; i < possibleMoves.length; i++) {
+  //   const attemptMove = possibleMoves[i];
+  //   console.log(`Now trying to go to ${attemptMove}`);
+  //   if (canMoveDirection(attemptMove, board, mySnake)) {
+  //     return attemptMove;
+  //   }
+  // }
   console.log('No moves were possible x.x');
+}
+
+function getLessOccupiedDirection(dists) {
+  let options = Object.values(dists);
+  let keys = Object.keys(dists);
+  let maxDist = Math.max(...options);
+  
+  for (let i = 0; i < keys.length; i++) {
+    const dir = keys[i];
+    if (dists[dir] === maxDist) {
+      console.log(`The maximum the snake can go to ${dir} is ${maxDist}`);
+      return dir;
+    }
+  }
 }
 
 function removeFromArray(element, oldArray) {
@@ -179,6 +214,8 @@ function isSpaceEmpty(snakes, nextDestination) {
     }
   }
 
-  console.log('Space is free!')
+  if (isDestEmpty) {
+    console.log('Space is free!');
+  }
   return isDestEmpty;
 }
