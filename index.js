@@ -228,7 +228,7 @@ function willSnakeBeFree(direction, board, mySnake) {
       'x': possibleFutureDestination['x'] + directionData[dir]['x'], 
       'y': possibleFutureDestination['y'] + directionData[dir]['y']
     };
-    if (!isSpaceEmpty(board['snakes'], nextDest)) {
+    if (isSpaceEmpty(board['snakes'], nextDest)) {
       console.log(`When I get to {${possibleFutureDestination['x']}, ${possibleFutureDestination['y']}}, I'll be able to go to {${nextDest['x']}, ${nextDest['y']}}`);
       return true;
     }
