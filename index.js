@@ -111,12 +111,13 @@ function getPossibleMove(whereTo, board, mySnake) {
     removeFromArray(whereTo, possibleMoves);
     console.log(possibleMoves);
 
-    possibleMoves.forEach(attemptMove => {
+    for (let i = 0; i < possibleMoves.length; i++) {
+      const attemptMove = possibleMoves[i];
       console.log(`Now trying to go to ${attemptMove}`);
       if (canMoveDirection(attemptMove, board, mySnake)) {
         return attemptMove;
       }
-    });
+    }
     console.log('No moves were possible x.x');
   }
 }
