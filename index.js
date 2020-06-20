@@ -212,14 +212,16 @@ function willSnakeBeFree(direction, board, mySnake) {
     'x': mySnake['head']['x'] + directionData[direction]['x'], 
     'y': mySnake['head']['y'] + directionData[direction]['y']
   };
+  console.log(`Checking if it is a good idea to move to ${futureDestination}`);
 
   for (let i = 0; i < possibleMoves.length; i++) {
     const dir = possibleMoves[i];
     let nextDest = {
-      'x': mySnake['head']['x'] + directionData[dir]['x'], 
-      'y': mySnake['head']['y'] + directionData[dir]['y']
+      'x': futureDestination['x'] + directionData[dir]['x'], 
+      'y': futureDestination['y'] + directionData[dir]['y']
     };
     if (!isSpaceEmpty(board['snakes'], nextDest)) {
+      console.log(`When I get to ${futureDestination}, I'll be able to go to ${nextDest}`);
       return true;
     }
   }
