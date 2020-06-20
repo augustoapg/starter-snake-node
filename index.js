@@ -20,7 +20,7 @@ const directionData = {
 }
 
 
-let lastMove = '';
+var lastMove = '';
 
 app.listen(PORT, () => console.log(`Example app listening at http://127.0.0.1:${PORT}`));
 
