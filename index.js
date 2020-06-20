@@ -216,23 +216,24 @@ function willSnakeBeFree(direction, board, mySnake) {
   let possibleMoves = ['up', 'down', 'left', 'right'];
   removeFromArray(directionData[direction]['opositeTo'], possibleMoves);
   
-  let futureDestination = {
+  let possibleFutureDestination = {
     'x': mySnake['head']['x'] + directionData[direction]['x'], 
     'y': mySnake['head']['y'] + directionData[direction]['y']
   };
-  console.log(`Checking if it is a good idea to move to {${futureDestination['x']}, ${futureDestination['y']}}`);
+  console.log(`Checking if it is a good idea to move to {${possibleFutureDestination['x']}, ${possibleFutureDestination['y']}}`);
 
   for (let i = 0; i < possibleMoves.length; i++) {
     const dir = possibleMoves[i];
     let nextDest = {
-      'x': futureDestination['x'] + directionData[dir]['x'], 
-      'y': futureDestination['y'] + directionData[dir]['y']
+      'x': possibleFutureDestination['x'] + directionData[dir]['x'], 
+      'y': possibleFutureDestination['y'] + directionData[dir]['y']
     };
     if (!isSpaceEmpty(board['snakes'], nextDest)) {
-      console.log(`When I get to {${futureDestination['x']}, ${futureDestination['y']}}, I'll be able to go to {${nextDest['x']}, ${nextDest['y']}}`);
+      console.log(`When I get to {${possibleFutureDestination['x']}, ${possibleFutureDestination['y']}}, I'll be able to go to {${nextDest['x']}, ${nextDest['y']}}`);
       return true;
     }
   }
+  console.log(`If I get to {${possibleFutureDestination['x']}, ${possibleFutureDestination['y']}}, I'll be locked! Don't go there!!!`);
 
   return false;
 }
