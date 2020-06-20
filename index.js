@@ -196,7 +196,35 @@ function canMoveDirection(direction, board, mySnake) {
     return false;
   }
 
-  return isSpaceEmpty(board['snakes'], nextDestination);
+  if (isSpaceEmpty(board['snakes'], nextDestination)) {
+    return willSnakeBeFree(direction, board, mySnake);
+  }
+
+  return false;
+}
+
+// checks if moving to that direction will lock the snake
+function willSnakeBeFree(direction, board, mySnake) {
+  let possibleMoves = ['up', 'down', 'left', 'right'];
+  removeFromArray(directionData[direction]['opositeTo'], possibleMoves);
+  
+  let futureDestination = {
+    'x': mySnake['head']['x'] + directionData[direction]['x'], 
+    'y': mySnake['head']['y'] + directionData[direction]['y']
+  };
+
+  for (let i = 0; i < possibleMoves.length; i++) {
+    const dir = possibleMoves[i];
+    let nextDest = {
+      'x': mySnake['head']['x'] + directionData[dir]['x'], 
+      'y': mySnake['head']['y'] + directionData[dir]['y']
+    };
+    if (!isSpaceEmpty(board['snakes'], nextDest)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function isDestinationOutOfBounds(nextDestination, board) {
