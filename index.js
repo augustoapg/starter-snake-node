@@ -77,70 +77,70 @@ function getDestination(mySnake, foods) {
 }
 
 function decideMovement(destination, board, mySnake) {
-  var snakes = board['snakes'];
+  var possibleMoves = ['up', 'down', 'left', 'right'];
+  var attemptMoves = [];
 
   if (mySnake['head']['x'] !== destination['x']) {
     console.log('my snake will move in the x axis. It is on ' + mySnake['head']['x'] + ' and needs to get to ' + destination['x']);
     if (mySnake['head']['x'] < destination['x']) {
-      if (canMoveRight(board, mySnake)) {
+      if (canMoveDirection('right', board, mySnake)) {
         return 'right';
       }
+
+      attemptMoves.push('right');
       console.log('Needed to go right, but couldn\'t');
     } else {
-      if (canMoveLeft(board, mySnake)) {
+      if (canMoveDirection('left', board, mySnake)) {
         return 'left';
       }
+      attemptMoves.push('left');
       console.log('Needed to go left, but couldn\'t');
     }
   } else {
     console.log('my snake will move in the y axis. It is on ' + mySnake['head']['y'] + ' and needs to get to ' + destination['y']);
     if (mySnake['head']['y'] < destination['y']) {
-      if (canMoveUp(board, mySnake)) {
+      if (canMoveDirection('up', board, mySnake)) {
         return 'up';
       }
+      attemptMoves.push('up');
       console.log('Needed to go up, but couldn\'t');
     } else {
-      if (canMoveDown(board, mySnake)) {
+      if (canMoveDirection('down', board, mySnake)) {
         return 'down';
       }
+      attemptMoves.push('down');
       console.log('Needed to go down, but couldn\'t');
     }
   }
 }
 
-function canMoveRight(board, mySnake) {
-  var nextDestination = {'x': mySnake['head']['x'] + 1, 'y': mySnake['head']['y']};
-
-  if (isDestinationOutOfBounds(nextDestination, board)) {
-    return false;
+function canMoveHorizontal(destination, board, mySnake) {
+  if (mySnake['head']['x'] < destination['x']) {
+    if (canMoveRight(board, mySnake)) {
+      return 'right';
+    }
+    console.log('Needed to go right, but couldn\'t');
+  } else {
+    if (canMoveLeft(board, mySnake)) {
+      return 'left';
+    }
+    console.log('Needed to go left, but couldn\'t');
   }
-
-  return isSpaceEmpty(board['snakes'], nextDestination);
 }
 
-function canMoveLeft(board, mySnake) {
-  var nextDestination = {'x': mySnake['head']['x'] -1, 'y': mySnake['head']['y']};
-  
-  if (isDestinationOutOfBounds(nextDestination, board)) {
-    return false;
+function canMoveDirection(direction, board, mySnake) {
+  var moveSpaces = {
+    'right': {'x': 1, 'y': 0},
+    'left': {'x': -1, 'y': 0},
+    'up': {'x': 0, 'y': 1},
+    'down': {'x': 0, 'y': -1},
   }
 
-  return isSpaceEmpty(board['snakes'], nextDestination);
-}
+  var nextDestination = {
+    'x': mySnake['head']['x'] + moveSpaces[direction]['x'], 
+    'y': mySnake['head']['y'] + moveSpaces[direction]['y']
+  };
 
-function canMoveUp(board, mySnake) {
-  var nextDestination = {'x': mySnake['head']['x'], 'y': mySnake['head']['y'] + 1};
-  
-  if (isDestinationOutOfBounds(nextDestination, board)) {
-    return false;
-  }
-
-  return isSpaceEmpty(board['snakes'], nextDestination);
-}
-
-function canMoveDown(board, mySnake) {
-  var nextDestination = {'x': mySnake['head']['x'], 'y': mySnake['head']['y'] - 1};
-  
   if (isDestinationOutOfBounds(nextDestination, board)) {
     return false;
   }
