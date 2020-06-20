@@ -11,6 +11,15 @@ app.post('/start', handleStart);
 app.post('/move', handleMove);
 app.post('/end', handleEnd);
 
+const directionData = {
+  'right': {'x': 1, 'y': 0, 'opositeTo': 'left'},
+  'left': {'x': -1, 'y': 0, 'opositeTo': 'right'},
+  'up': {'x': 0, 'y': 1, 'opositeTo': 'down'},
+  'down': {'x': 0, 'y': -1, 'opositeTo': 'up'},
+}
+
+let lastMove = '';
+
 app.listen(PORT, () => console.log(`Example app listening at http://127.0.0.1:${PORT}`));
 
 const mySnakeId = 'solid-venom-snake';
@@ -43,6 +52,7 @@ function handleMove(request, response) {
 
   var destination = getDestination(mySnake, foods);
   var move = decideMovement(destination, board, mySnake);
+  lastMove = move;
 
   console.log('MOVE: ' + move);
   response.status(200).send({
@@ -52,6 +62,7 @@ function handleMove(request, response) {
 
 function handleEnd(request, response) {
   var gameData = request.body;
+  lastMove = '';
 
   console.log('END');
   response.status(200).send('ok');
@@ -101,25 +112,30 @@ function decideMovement(destination, board, mySnake) {
 }
 
 function getPossibleMove(whereTo, board, mySnake) {
-  var possibleMoves = ['up', 'down', 'left', 'right'];
   console.log(`Best move is to: ${whereTo}`);
   if (canMoveDirection(whereTo, board, mySnake)) {
     return whereTo;
   } else {
     console.log(`Cannot move to: ${whereTo}`);
-    // TODO: Recursive?
-    removeFromArray(whereTo, possibleMoves);
-    console.log(possibleMoves);
-
-    for (let i = 0; i < possibleMoves.length; i++) {
-      const attemptMove = possibleMoves[i];
-      console.log(`Now trying to go to ${attemptMove}`);
-      if (canMoveDirection(attemptMove, board, mySnake)) {
-        return attemptMove;
-      }
-    }
-    console.log('No moves were possible x.x');
+    return getAlternativeRoute(whereTo, board, mySnake);
   }
+}
+
+function getAlternativeRoute(whereTo, board, mySnake) {
+  let possibleMoves = ['up', 'down', 'left', 'right'];
+  removeFromArray(whereTo, possibleMoves);
+  console.log(`since last move was ${lastMove}, do not move to its oposite direction ${directionData[lastMove]['opositeTo']}`);
+  removeFromArray(directionData[lastMove]['opositeTo'], possibleMoves);
+  console.log(possibleMoves);
+
+  for (let i = 0; i < possibleMoves.length; i++) {
+    const attemptMove = possibleMoves[i];
+    console.log(`Now trying to go to ${attemptMove}`);
+    if (canMoveDirection(attemptMove, board, mySnake)) {
+      return attemptMove;
+    }
+  }
+  console.log('No moves were possible x.x');
 }
 
 function removeFromArray(element, oldArray) {
@@ -130,16 +146,9 @@ function removeFromArray(element, oldArray) {
 }
 
 function canMoveDirection(direction, board, mySnake) {
-  var moveSpaces = {
-    'right': {'x': 1, 'y': 0},
-    'left': {'x': -1, 'y': 0},
-    'up': {'x': 0, 'y': 1},
-    'down': {'x': 0, 'y': -1},
-  }
-
   var nextDestination = {
-    'x': mySnake['head']['x'] + moveSpaces[direction]['x'], 
-    'y': mySnake['head']['y'] + moveSpaces[direction]['y']
+    'x': mySnake['head']['x'] + directionData[direction]['x'], 
+    'y': mySnake['head']['y'] + directionData[direction]['y']
   };
 
   if (isDestinationOutOfBounds(nextDestination, board)) {
