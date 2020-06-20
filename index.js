@@ -151,11 +151,11 @@ function getAlternativeRoute(whereTo, board, mySnake) {
 
   if (canMoveDirection(lessOccupied, board, mySnake)) {
     return lessOccupied;
-  } else if (canMoveDirection(lastMove, board, mySnake)) {
-    return lastMove;
+  } else {
+    removeFromArray(lessOccupied, possibleMoves);
+    console.log(`since I cannot go to less occupied, I will go to the last available: ${possibleMoves[0]}`);
+    return possibleMoves[0];
   }
-
-  return directionData[lessOccupied]['opositeTo'];
 }
 
 function getLessOccupiedDirection(dists) {
