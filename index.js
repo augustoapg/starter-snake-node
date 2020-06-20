@@ -130,8 +130,10 @@ function getAlternativeRoute(whereTo, board, mySnake) {
   let possibleMoves = ['up', 'down', 'left', 'right'];
   let dists = {};
   removeFromArray(whereTo, possibleMoves);
-  console.log(`since last move was ${lastMove}, do not move to its oposite direction ${directionData[lastMove]['opositeTo']}`);
-  removeFromArray(directionData[lastMove]['opositeTo'], possibleMoves);
+  if (lastMove !== '') {
+    console.log(`since last move was ${lastMove}, do not move to its oposite direction ${directionData[lastMove]['opositeTo']}`);
+    removeFromArray(directionData[lastMove]['opositeTo'], possibleMoves);
+  }
   console.log(possibleMoves);
 
   for (let i = 0; i < possibleMoves.length; i++) {
