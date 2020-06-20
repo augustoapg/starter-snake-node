@@ -46,6 +46,8 @@ function handleStart(request, response) {
 }
 
 function handleMove(request, response) {
+  console.log(`my last move was ${lastMove}`);
+
   var gameData = request.body;
   var board = gameData['board'];
 
@@ -55,6 +57,7 @@ function handleMove(request, response) {
   var destination = getDestination(mySnake, foods);
   var move = decideMovement(destination, board, mySnake);
   lastMove = move;
+  console.log(`saving last move as ${lastMove}`);
 
   console.log('MOVE: ' + move);
   response.status(200).send({
@@ -212,7 +215,7 @@ function willSnakeBeFree(direction, board, mySnake) {
     'x': mySnake['head']['x'] + directionData[direction]['x'], 
     'y': mySnake['head']['y'] + directionData[direction]['y']
   };
-  console.log(`Checking if it is a good idea to move to ${futureDestination}`);
+  console.log(`Checking if it is a good idea to move to {${futureDestination['x']}, ${futureDestination['y']}}`);
 
   for (let i = 0; i < possibleMoves.length; i++) {
     const dir = possibleMoves[i];
@@ -221,7 +224,7 @@ function willSnakeBeFree(direction, board, mySnake) {
       'y': futureDestination['y'] + directionData[dir]['y']
     };
     if (!isSpaceEmpty(board['snakes'], nextDest)) {
-      console.log(`When I get to ${futureDestination}, I'll be able to go to ${nextDest}`);
+      console.log(`When I get to {${futureDestination['x']}, ${futureDestination['y']}}, I'll be able to go to {${nextDest['x']}, ${nextDest['y']}}`);
       return true;
     }
   }
