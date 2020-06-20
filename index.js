@@ -198,10 +198,12 @@ function canMoveDirection(direction, board, mySnake) {
   console.log(`Checking if I can go to ${nextDestination['x']}, ${nextDestination['y']}`)
 
   if (isDestinationOutOfBounds(nextDestination, board)) {
+    console.log(`It will be out of bounds. Don't go there`)
     return false;
   }
 
   if (isSpaceEmpty(board['snakes'], nextDestination)) {
+    console.log(`The space is empty. It is a possibility.`)
     return willSnakeBeFree(direction, board, mySnake);
   }
 
