@@ -203,8 +203,9 @@ function canMoveDirection(direction, board, mySnake) {
   }
 
   if (isSpaceEmpty(board['snakes'], nextDestination)) {
-    console.log(`The space is empty. It is a possibility.`)
-    return willSnakeBeFree(direction, board, mySnake);
+    console.log(`The space is empty. It is a possibility.`);
+    return true;
+    // return willSnakeBeFree(direction, board, mySnake);
   }
 
   return false;
