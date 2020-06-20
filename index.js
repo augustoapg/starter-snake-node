@@ -149,7 +149,7 @@ function getAlternativeRoute(whereTo, board, mySnake) {
 
   lessOccupied = getLessOccupiedDirection(dists);
 
-  if (canMoveDirection(lessOccupied)) {
+  if (canMoveDirection(lessOccupied, board, mySnake)) {
     return lessOccupied;
   }
 
