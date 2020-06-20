@@ -78,39 +78,85 @@ function getDestination(mySnake, foods) {
 
 function decideMovement(destination, board, mySnake) {
   var possibleMoves = ['up', 'down', 'left', 'right'];
+  var whereTo = '';
   var attemptMoves = [];
 
   if (mySnake['head']['x'] !== destination['x']) {
     console.log('my snake will move in the x axis. It is on ' + mySnake['head']['x'] + ' and needs to get to ' + destination['x']);
     if (mySnake['head']['x'] < destination['x']) {
-      if (canMoveDirection('right', board, mySnake)) {
-        return 'right';
+      whereTo = 'right';
+      if (canMoveDirection(whereTo, board, mySnake)) {
+        return whereTo;
+      } else {
+        // TODO: Recursive?
+        removeFromArray(whereTo, possibleMoves);
+
+        possibleMoves.forEach(attemptMove => {
+          if (canMoveDirection(attemptMove, board, mySnake)) {
+            return attemptMove;
+          }
+        });
+        console.log('No moves were possible x.x');
       }
 
       attemptMoves.push('right');
       console.log('Needed to go right, but couldn\'t');
     } else {
-      if (canMoveDirection('left', board, mySnake)) {
-        return 'left';
+      whereTo = 'left';
+      if (canMoveDirection(whereTo, board, mySnake)) {
+        return whereTo;
+      } else {
+        // TODO: Recursive?
+        removeFromArray(whereTo, possibleMoves);
+
+        possibleMoves.forEach(attemptMove => {
+          if (canMoveDirection(attemptMove, board, mySnake)) {
+            return attemptMove;
+          }
+        });
+        console.log('No moves were possible x.x');
       }
-      attemptMoves.push('left');
-      console.log('Needed to go left, but couldn\'t');
     }
   } else {
     console.log('my snake will move in the y axis. It is on ' + mySnake['head']['y'] + ' and needs to get to ' + destination['y']);
     if (mySnake['head']['y'] < destination['y']) {
-      if (canMoveDirection('up', board, mySnake)) {
-        return 'up';
+      whereTo = 'up';
+      if (canMoveDirection(whereTo, board, mySnake)) {
+        return whereTo;
+      } else {
+        // TODO: Recursive?
+        removeFromArray(whereTo, possibleMoves);
+
+        possibleMoves.forEach(attemptMove => {
+          if (canMoveDirection(attemptMove, board, mySnake)) {
+            return attemptMove;
+          }
+        });
+        console.log('No moves were possible x.x');
       }
-      attemptMoves.push('up');
-      console.log('Needed to go up, but couldn\'t');
     } else {
-      if (canMoveDirection('down', board, mySnake)) {
-        return 'down';
+      whereTo = 'down';
+      if (canMoveDirection(whereTo, board, mySnake)) {
+        return whereTo;
+      } else {
+        // TODO: Recursive?
+        removeFromArray(whereTo, possibleMoves);
+
+        possibleMoves.forEach(attemptMove => {
+          if (canMoveDirection(attemptMove, board, mySnake)) {
+            return attemptMove;
+          }
+        });
+        console.log('No moves were possible x.x');
       }
-      attemptMoves.push('down');
-      console.log('Needed to go down, but couldn\'t');
     }
+  }
+}
+
+function removeFromArray(element, oldArray) {
+  var index = oldArray.indexOf(element);
+  if (index !== -1) {
+    oldArray.splice(index, 1);
   }
 }
 
