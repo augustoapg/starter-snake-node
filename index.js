@@ -154,11 +154,13 @@ function getAlternativeRoute(whereTo, board, mySnake) {
   } else {
     removeFromArray(lessOccupied, possibleMoves);
     console.log(`could not go to less occupied (${lessOccupied}). Will now try to go to ${possibleMoves[0]}`);
+    console.log(possibleMoves);
     if (canMoveDirection(possibleMoves[0], board, mySnake)) {
       return possibleMoves[0];
     } else if (possibleMoves.length !== 0) {
-      removeFromArray(lessOccupied, possibleMoves);
+      removeFromArray(possibleMoves[0], possibleMoves);
       console.log(`going to last space available: ${possibleMoves[0]}`);
+      console.log(possibleMoves);
       return possibleMoves[0];
     }
     console.log('No possible moves x.x');
@@ -187,10 +189,12 @@ function removeFromArray(element, oldArray) {
 }
 
 function canMoveDirection(direction, board, mySnake) {
-  var nextDestination = {
+  let nextDestination = {
     'x': mySnake['head']['x'] + directionData[direction]['x'], 
     'y': mySnake['head']['y'] + directionData[direction]['y']
   };
+
+  console.log(`Checking if I can go to ${nextDestination['x']}, ${nextDestination['y']}`)
 
   if (isDestinationOutOfBounds(nextDestination, board)) {
     return false;
