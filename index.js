@@ -11,12 +11,14 @@ app.post('/start', handleStart);
 app.post('/move', handleMove);
 app.post('/end', handleEnd);
 
+const axisDimension = {'x': 'width', 'y': 'height'};
 const directionData = {
-  'right': {'x': 1, 'y': 0, 'axis': 'horizontal', 'opositeTo': 'left'},
-  'left': {'x': -1, 'y': 0, 'axis': 'horizontal', 'opositeTo': 'right'},
-  'up': {'x': 0, 'y': 1, 'axis': 'vertical', 'opositeTo': 'down'},
-  'down': {'x': 0, 'y': -1, 'axis': 'vertical', 'opositeTo': 'up'},
+  'right': {'x': 1, 'y': 0, 'axis': 'x', 'opositeTo': 'left'},
+  'left': {'x': -1, 'y': 0, 'axis': 'x', 'opositeTo': 'right'},
+  'up': {'x': 0, 'y': 1, 'axis': 'y', 'opositeTo': 'down'},
+  'down': {'x': 0, 'y': -1, 'axis': 'y', 'opositeTo': 'up'},
 }
+
 
 let lastMove = '';
 
@@ -131,19 +133,13 @@ function getAlternativeRoute(whereTo, board, mySnake) {
 
   for (let i = 0; i < possibleMoves.length; i++) {
     const attemptMove = possibleMoves[i];
+    const axis = directionData[attemptMove]['axis'];
+    const dimension = axisDimension[axis];
 
-    if (directionData[attemptMove]['axis'] === 'vertical') {
-      if (directionData[attemptMove]['y'] === -1) {
-        dists[attemptMove] = mySnake['head']['y'];
-      } else {
-        dists[attemptMove] = board['height'] - mySnake['head']['y'];
-      }
+    if (directionData[attemptMove][axis] === -1) {
+      dists[attemptMove] = mySnake['head'][axis];
     } else {
-      if (directionData[attemptMove]['x'] === -1) {
-        dists[attemptMove] = mySnake['head']['x'];
-      } else {
-        dists[attemptMove] = board['width'] - mySnake['head']['x'];
-      }
+      dists[attemptMove] = board[dimension] - mySnake['head'][axis];
     }
   }
 
