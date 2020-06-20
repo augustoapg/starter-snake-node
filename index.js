@@ -153,8 +153,15 @@ function getAlternativeRoute(whereTo, board, mySnake) {
     return lessOccupied;
   } else {
     removeFromArray(lessOccupied, possibleMoves);
-    console.log(`since I cannot go to less occupied, I will go to the last available: ${possibleMoves[0]}`);
-    return possibleMoves[0];
+    console.log(`could not go to less occupied (${lessOccupied}). Will now try to go to ${possibleMoves[0]}`);
+    if (canMoveDirection(possibleMoves[0], board, mySnake)) {
+      return possibleMoves[0];
+    } else if (possibleMoves.length !== 0) {
+      removeFromArray(lessOccupied, possibleMoves);
+      console.log(`going to last space available: ${possibleMoves[0]}`);
+      return possibleMoves[0];
+    }
+    console.log('No possible moves x.x');
   }
 }
 
