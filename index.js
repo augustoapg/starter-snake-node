@@ -84,19 +84,19 @@ function decideMovement(destination, board, mySnake) {
     console.log('my snake will move in the x axis. It is on ' + mySnake['head']['x'] + ' and needs to get to ' + destination['x']);
     if (mySnake['head']['x'] < destination['x']) {
       whereTo = 'right';
-      getPossibleMove(whereTo, board, mySnake);
+      return getPossibleMove(whereTo, board, mySnake);
     } else {
       whereTo = 'left';
-      getPossibleMove(whereTo, board, mySnake);
+      return getPossibleMove(whereTo, board, mySnake);
     }
   } else {
     console.log('my snake will move in the y axis. It is on ' + mySnake['head']['y'] + ' and needs to get to ' + destination['y']);
     if (mySnake['head']['y'] < destination['y']) {
       whereTo = 'up';
-      getPossibleMove(whereTo, board, mySnake);
+      return getPossibleMove(whereTo, board, mySnake);
     } else {
       whereTo = 'down';
-      getPossibleMove(whereTo, board, mySnake);
+      return getPossibleMove(whereTo, board, mySnake);
     }
   }
 }
