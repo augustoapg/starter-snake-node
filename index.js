@@ -150,7 +150,7 @@ function canMoveDirection(direction, board, mySnake) {
 }
 
 function isDestinationOutOfBounds(nextDestination, board) {
-  return nextDestination['x'] < 0 || nextDestination['y'] < 0 || nextDestination['x'] > board['width'] || nextDestination['y'] > board['height'];
+  return nextDestination['x'] < 0 || nextDestination['y'] < 0 || nextDestination['x'] >= board['width'] || nextDestination['y'] >= board['height'];
 }
 
 function isSpaceEmpty(snakes, nextDestination) {
