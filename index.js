@@ -79,77 +79,45 @@ function getDestination(mySnake, foods) {
 function decideMovement(destination, board, mySnake) {
   var possibleMoves = ['up', 'down', 'left', 'right'];
   var whereTo = '';
-  var attemptMoves = [];
 
   if (mySnake['head']['x'] !== destination['x']) {
     console.log('my snake will move in the x axis. It is on ' + mySnake['head']['x'] + ' and needs to get to ' + destination['x']);
     if (mySnake['head']['x'] < destination['x']) {
       whereTo = 'right';
-      if (canMoveDirection(whereTo, board, mySnake)) {
-        return whereTo;
-      } else {
-        // TODO: Recursive?
-        removeFromArray(whereTo, possibleMoves);
-
-        possibleMoves.forEach(attemptMove => {
-          if (canMoveDirection(attemptMove, board, mySnake)) {
-            return attemptMove;
-          }
-        });
-        console.log('No moves were possible x.x');
-      }
-
-      attemptMoves.push('right');
-      console.log('Needed to go right, but couldn\'t');
+      getPossibleMove(whereTo, board, mySnake);
     } else {
       whereTo = 'left';
-      if (canMoveDirection(whereTo, board, mySnake)) {
-        return whereTo;
-      } else {
-        // TODO: Recursive?
-        removeFromArray(whereTo, possibleMoves);
-
-        possibleMoves.forEach(attemptMove => {
-          if (canMoveDirection(attemptMove, board, mySnake)) {
-            return attemptMove;
-          }
-        });
-        console.log('No moves were possible x.x');
-      }
+      getPossibleMove(whereTo, board, mySnake);
     }
   } else {
     console.log('my snake will move in the y axis. It is on ' + mySnake['head']['y'] + ' and needs to get to ' + destination['y']);
     if (mySnake['head']['y'] < destination['y']) {
       whereTo = 'up';
-      if (canMoveDirection(whereTo, board, mySnake)) {
-        return whereTo;
-      } else {
-        // TODO: Recursive?
-        removeFromArray(whereTo, possibleMoves);
-
-        possibleMoves.forEach(attemptMove => {
-          if (canMoveDirection(attemptMove, board, mySnake)) {
-            return attemptMove;
-          }
-        });
-        console.log('No moves were possible x.x');
-      }
+      getPossibleMove(whereTo, board, mySnake);
     } else {
       whereTo = 'down';
-      if (canMoveDirection(whereTo, board, mySnake)) {
-        return whereTo;
-      } else {
-        // TODO: Recursive?
-        removeFromArray(whereTo, possibleMoves);
-
-        possibleMoves.forEach(attemptMove => {
-          if (canMoveDirection(attemptMove, board, mySnake)) {
-            return attemptMove;
-          }
-        });
-        console.log('No moves were possible x.x');
-      }
+      getPossibleMove(whereTo, board, mySnake);
     }
+  }
+}
+
+function getPossibleMove(whereTo, board, mySnake) {
+  console.log(`Best move is to: ${whereTo}`);
+  if (canMoveDirection(whereTo, board, mySnake)) {
+    return whereTo;
+  } else {
+    console.log(`Cannot move to: ${whereTo}`);
+    // TODO: Recursive?
+    removeFromArray(whereTo, possibleMoves);
+    console.log(possibleMoves);
+
+    possibleMoves.forEach(attemptMove => {
+      console.log(`Now trying to go to ${attemptMove}`);
+      if (canMoveDirection(attemptMove, board, mySnake)) {
+        return attemptMove;
+      }
+    });
+    console.log('No moves were possible x.x');
   }
 }
 
@@ -157,20 +125,6 @@ function removeFromArray(element, oldArray) {
   var index = oldArray.indexOf(element);
   if (index !== -1) {
     oldArray.splice(index, 1);
-  }
-}
-
-function canMoveHorizontal(destination, board, mySnake) {
-  if (mySnake['head']['x'] < destination['x']) {
-    if (canMoveRight(board, mySnake)) {
-      return 'right';
-    }
-    console.log('Needed to go right, but couldn\'t');
-  } else {
-    if (canMoveLeft(board, mySnake)) {
-      return 'left';
-    }
-    console.log('Needed to go left, but couldn\'t');
   }
 }
 
@@ -206,7 +160,7 @@ function isSpaceEmpty(snakes, nextDestination) {
     var snake = snakes[i];
     for (j = 0; j < snake['body'].length; j++) {
       var segment = snake['body'][j];
-      console.log(`segment is {${segment['x']}, ${segment['y']}}`);
+      // console.log(`segment is {${segment['x']}, ${segment['y']}}`);
       if (segment['x'] === nextDestination['x'] && segment['y'] === nextDestination['y']) {
         console.log('Space occupied!');
         isDestEmpty = false;
@@ -215,5 +169,6 @@ function isSpaceEmpty(snakes, nextDestination) {
     }
   }
 
+  console.log('Space is free!')
   return isDestEmpty;
 }
