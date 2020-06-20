@@ -77,7 +77,6 @@ function getDestination(mySnake, foods) {
 }
 
 function decideMovement(destination, board, mySnake) {
-  var possibleMoves = ['up', 'down', 'left', 'right'];
   var whereTo = '';
 
   if (mySnake['head']['x'] !== destination['x']) {
@@ -102,6 +101,7 @@ function decideMovement(destination, board, mySnake) {
 }
 
 function getPossibleMove(whereTo, board, mySnake) {
+  var possibleMoves = ['up', 'down', 'left', 'right'];
   console.log(`Best move is to: ${whereTo}`);
   if (canMoveDirection(whereTo, board, mySnake)) {
     return whereTo;
