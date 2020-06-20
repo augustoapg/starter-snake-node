@@ -151,6 +151,8 @@ function getAlternativeRoute(whereTo, board, mySnake) {
 
   if (canMoveDirection(lessOccupied, board, mySnake)) {
     return lessOccupied;
+  } else if (canMoveDirection(lastMove, board, mySnake)) {
+    return lastMove;
   }
 
   return directionData[lessOccupied]['opositeTo'];
